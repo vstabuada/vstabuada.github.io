@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>PDV Smart</title>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="tabusistema.css">
+</head>
+
+<body>
+
+    <header>
+
+        <div class="logo">
+            PDV SMART
+        </div>
+
+        <div class="top-buttons">
+
+            <button class="top-btn" onclick="openHistory()">
+                Histórico
+            </button>
+
+        </div>
+
+    </header>
+
+    <div class="container">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+
+            <div class="card">
+
+                <input type="text" id="searchInput" class="search-input" placeholder="Pesquisar produto...">
+
+                <div id="categories"></div>
+
+            </div>
+
+        </aside>
+
+        <!-- MAIN -->
+        <main class="main">
+
+            <div class="cart">
+
+                <div class="cart-header">
+
+                    <h2>Venda Atual</h2>
+
+                    <div id="date"></div>
+
+                </div>
+
+                <div class="cart-items" id="cartItems"></div>
+
+            </div>
+
+            <div class="totals">
+
+                <div class="total-card summary-card">
+
+                    <div class="total-title">
+                        Resumo da Venda
+                    </div>
+
+                    <div class="total-value" id="subtotal">
+                        R$ 0,00
+                    </div>
+
+                    <div class="summary-info">
+
+                        <div class="summary-row">
+                            <span>Itens</span>
+                            <strong id="totalItems">
+                                0
+                            </strong>
+                        </div>
+
+                        <div class="summary-row">
+                            <span>Produtos únicos</span>
+                            <strong id="uniqueItems">
+                                0
+                            </strong>
+                        </div>
+
+                        <div class="summary-row">
+                            <span>Horário</span>
+                            <strong id="saleTime">
+                                --
+                            </strong>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="total-card">
+
+                    <div class="total-title">
+                        Forma de Pagamento
+                    </div>
+
+                    <select class="select" id="paymentMethod">
+                        <option>Dinheiro</option>
+                        <option>PIX</option>
+                        <option>Débito</option>
+                        <option>Crédito</option>
+                    </select>
+
+                    <textarea class="textarea" placeholder="Observações da venda..." id="note"></textarea>
+
+                    <button class="finish-btn" onclick="finishSale()">
+                        Finalizar Venda
+                    </button>
+
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+    <!-- POPUP -->
+
+    <div class="popup" id="historyPopup">
+
+        <div class="popup-content">
+
+            <h2>
+                Histórico de Vendas
+            </h2>
+
+            <div id="historyList"></div>
+
+            <button class="close-btn" onclick="closeHistory()">
+                Fechar
+            </button>
+
+        </div>
+
+    </div>
+
+    <script src="tabusistema.js"></script>
+
+</body>
+
+</html>
