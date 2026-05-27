@@ -18,8 +18,6 @@ async function getUsers() {
 
 const usersData = await getUsers()
 
-console.log(usersData)
-
 let submit = document.getElementById("submit")
 let user = document.getElementById("user")
 let password = document.getElementById("password")
@@ -28,7 +26,6 @@ let password = document.getElementById("password")
 
 
 submit.addEventListener("click", function () {
-
     const validUser = usersData.findIndex(u => u.user === user.value)
 
     if (validUser === -1) {
