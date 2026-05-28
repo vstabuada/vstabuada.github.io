@@ -23,9 +23,7 @@ let user = document.getElementById("user")
 let password = document.getElementById("password")
 
 
-
-
-submit.addEventListener("click", function () {
+function submitLogin() {
     const validUser = usersData.findIndex(u => u.user === user.value)
 
     if (validUser === -1) {
@@ -35,5 +33,11 @@ submit.addEventListener("click", function () {
     } else {
         window.location.href = `${usersData[validUser].href}.html`
     }
+}
 
+submit.addEventListener("click", submitLogin)
+document.addEventListener("keypress", e => {
+    if (e.key === "Enter") {
+        submitLogin()
+    }
 })

@@ -1,4 +1,27 @@
+import { createClient } from 'https://esm.sh/@supabase/supabase-js'
 
+const supabase = createClient(
+    'https://shirfddotjoqdlztfsxt.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNoaXJmZGRvdGpvcWRsenRmc3h0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1NjgxMjcsImV4cCI6MjA5NTE0NDEyN30.z4a43wJ7v6iy-MUzyV8dZ0Ejz0UeKcWNX-cBpG4MR_M'
+)
+/*
+
+async function getProducts() {
+    const { data, error } = await supabase
+        .from('produtos')
+        .select('*')
+        .order('id', { ascending: false })
+    if (error) {
+        console.error('Erro ao buscar produtos:', error)
+        return { error }
+    }
+    console.log(data)
+    return data
+}
+
+
+const products = getProducts()
+*/
 const products = {
 
     Pasteis: [
@@ -14,7 +37,7 @@ const products = {
 
     Doses: [
 
-        { name: "Copão de Gin", price: 10.00 },
+        { name: "Copão de Gin", price: 11.35 },
         { name: "Copão de Vodka", price: 10.00 },
         { name: "Copão de Chanceler", price: 10.00 },
         { name: "Copão de Smirnoff", price: 20.00 },
@@ -50,7 +73,6 @@ const products = {
     ]
 
 };
-
 let cart = [];
 let salesHistory = [];
 
@@ -68,6 +90,24 @@ const subtotalEl =
 function renderProducts(filter = "") {
 
     categoriesEl.innerHTML = "";
+
+
+
+
+
+
+
+
+    // PAREI AQUI ------------------------------------------------- ARRUMAR CATEGORIA
+
+
+
+
+
+
+
+
+
 
     Object.keys(products).forEach(category => {
 
@@ -101,7 +141,7 @@ function renderProducts(filter = "") {
                         </div>
 
                         <div class="product-price">
-                            R$ ${product.price.toFixed(2)}
+                            ${product.price.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
                         </div>
                     </div>
                 `).join("")}
@@ -139,6 +179,8 @@ function addToCart(product) {
     renderCart();
 
 }
+
+window.addToCart = addToCart
 
 function increase(index) {
 
@@ -199,7 +241,7 @@ function renderCart() {
 
                 <div class="item-price">
                     ${item.quantity}x •
-                    R$ ${item.price.toFixed(2)}
+                    ${item.price.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
                 </div>
 
             </div>
@@ -234,7 +276,7 @@ function renderCart() {
             </div>
 
             <div class="item-total">
-                R$ ${total.toFixed(2)}
+                ${total.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
             </div>
         `;
 
@@ -243,7 +285,7 @@ function renderCart() {
     });
 
     subtotalEl.innerText =
-        `R$ ${subtotal.toFixed(2)}`;
+        `${subtotal.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}`;
 
 
 
@@ -278,7 +320,12 @@ function renderCart() {
 
 /* FINALIZAR */
 
-function finishSale() {
+
+async function finishSale() {
+
+    let total = 0
+
+    cart.forEach(item => { total += item.price * item.quantity })
 
     if (cart.length === 0) {
 
@@ -287,31 +334,29 @@ function finishSale() {
         return;
 
     }
+    const venda = {
+        produtos: cart.map(item => ({
+            nome: item.name,
+            quantidade: item.quantity,
+            preco: item.price
 
-    const sale = {
+        })
+        ),
+        total: total,
+        data: new Date().toISOString(),
+        metodo: document.getElementById("paymentMethod").value,
+        obs: document.getElementById("note").value
+    }
+    console.log(venda)
+    const { error } = await supabase
+        .from("vendas")
+        .insert([venda]);
 
-        date:
-            new Date()
-                .toLocaleString("pt-BR"),
-
-        payment:
-            document
-                .getElementById("paymentMethod")
-                .value,
-
-        note:
-            document
-                .getElementById("note")
-                .value,
-
-        items: [...cart],
-
-        total:
-            subtotalEl.innerText
-
-    };
-
-    salesHistory.unshift(sale);
+    if (error) {
+        alert("Erro ao adicionar venda");
+        console.error(error);
+        return;
+    }
 
     alert("Venda finalizada!");
 
@@ -324,6 +369,8 @@ function finishSale() {
     renderCart();
 
 }
+
+window.finishSale = finishSale
 
 /* HISTÓRICO */
 
@@ -415,3 +462,12 @@ document.getElementById("date").innerText =
     new Date().toLocaleDateString("pt-BR");
 
 renderProducts();
+
+
+/* Config */
+
+const configBtn = document.getElementById("configBtn")
+
+configBtn.addEventListener("click", () => {
+    window.location.href = "dashboard.html"
+})

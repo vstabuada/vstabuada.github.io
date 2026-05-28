@@ -89,6 +89,31 @@
         .top-buttons {
             display: flex;
             gap: 12px;
+            align-items: center;
+        }
+
+        .config-btn {
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: none;
+            border-radius: 12px;
+
+            background: #262626;
+            color: white;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .config-btn:hover {
+            background: #363636;
+            transform: rotate(15deg);
         }
 
         .top-btn {
@@ -110,6 +135,8 @@
             cursor: pointer;
 
             transition: 0.25s;
+
+            text-decoration: none;
         }
 
         .top-btn:hover {
@@ -128,7 +155,7 @@
 
             gap: 22px;
 
-            padding: 24px;
+            padding: 14px 24px 0px 24px;
         }
 
         /* SIDEBAR */
@@ -795,6 +822,15 @@
                 font-size: 22px;
             }
 
+            .sidebar .card {
+
+                height: calc(100vh - 200px);
+
+                overflow-y: auto;
+
+                padding-right: 8px;
+            }
+
         }
 
         .summary-card {
@@ -855,6 +891,7 @@
                 padding: 0 18px;
 
                 font-size: 14px;
+
             }
 
             .container {
@@ -1034,6 +1071,18 @@
                 padding: 0 14px;
 
                 font-size: 14px;
+            }
+
+
+
+            .select option {
+                background: #1f2b46;
+                color: rgb(255, 0, 0);
+            }
+
+            .select-option {
+                background: #1f2b46;
+                color: rgb(255, 0, 0);
             }
 
             .textarea {

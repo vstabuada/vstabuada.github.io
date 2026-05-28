@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Dashboard Produtos</title>
+
+    <link rel="stylesheet" href="dashboard.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <header>
+            <h1>Dashboard de Produtos</h1>
+        </header>
+
+        <section class="add-product-card">
+
+            <h2>Adicionar Produto</h2>
+
+            <div class="form-grid">
+
+                <input type="text" id="productName" placeholder="Nome do produto">
+
+                <input type="text" id="productCategory" placeholder="Categoria">
+
+                <input type="number" id="productPrice" placeholder="Preço" step="0.01">
+
+                <input type="number" id="productCost" placeholder="Custo de fabricação" step="0.01">
+
+                <button id="addProductBtn">
+                    Adicionar
+                </button>
+
+            </div>
+
+        </section>
+
+        <section class="table-section">
+
+            <div class="table-header">
+                <h2>Produtos</h2>
+
+                <input type="text" id="searchInput" placeholder="Pesquisar produto">
+            </div>
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Produto</th>
+                            <th>Categoria</th>
+                            <th>Preço</th>
+                            <th>Custo</th>
+                            <th>Lucro</th>
+                            <th>Margem</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="productsTableBody">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </div>
+
+    <script type="module" src="dashboard.js"></script>
+
+</body>
+
+</html>
