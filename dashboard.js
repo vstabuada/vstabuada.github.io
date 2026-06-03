@@ -171,6 +171,11 @@ function bindButtons() {
                         ).value
                     );
 
+                    if (!nome || !categoria || isNaN(preco) || isNaN(custo)) {
+                        alert("Preencha todos os campos");
+                        return;
+                    }
+
                     const { error } = await supabase
                         .from("produtos")
                         .update({

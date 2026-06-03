@@ -4,7 +4,52 @@ const supabase = createClient(
     'https://shirfddotjoqdlztfsxt.supabase.co',
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNoaXJmZGRvdGpvcWRsenRmc3h0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1NjgxMjcsImV4cCI6MjA5NTE0NDEyN30.z4a43wJ7v6iy-MUzyV8dZ0Ejz0UeKcWNX-cBpG4MR_M'
 )
-/*
+
+function mostrarToast(mensagem) {
+    const toast = document.createElement("div");
+
+    toast.textContent = mensagem;
+    toast.style.position = "fixed";
+    toast.style.top = "20px";
+    toast.style.right = "20px";
+    toast.style.padding = "15px";
+    toast.style.background = "#28a745";
+    toast.style.color = "#fff";
+    toast.style.borderRadius = "8px";
+    toast.style.zIndex = "9999";
+
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+        toast.remove();
+    }, 5000);
+}
+
+const channel = supabase
+    .channel('novas-vendas')
+    .on(
+        'postgres_changes',
+        {
+            event: 'INSERT',
+            schema: 'public',
+            table: 'vendas'
+        },
+        (payload) => {
+            console.log('Nova venda:', payload.new);
+
+            // Toca som
+            document.getElementById('alertSound').play();
+
+            // Exibe notificação
+            mostrarToast(
+                `Nova venda: ${payload.new.produto} - R$ ${payload.new.valor}`
+            );
+        }
+    )
+    .subscribe();
+
+
+
 
 async function getProducts() {
     const { data, error } = await supabase
@@ -15,64 +60,24 @@ async function getProducts() {
         console.error('Erro ao buscar produtos:', error)
         return { error }
     }
-    console.log(data)
-    return data
+
+    const categorizedProducts = {}
+
+    data.forEach(product => {
+        if (!categorizedProducts[product.categoria]) {
+            categorizedProducts[product.categoria] = []
+        }
+        categorizedProducts[product.categoria].push({
+            name: product.nome,
+            price: product.preco
+        })
+    })
+    return categorizedProducts
 }
 
 
-const products = getProducts()
-*/
-const products = {
 
-    Pasteis: [
 
-        { name: "Pastel de Carne", price: 12.00 },
-        { name: "Pastel de Frango", price: 12.00 },
-        { name: "Pastel de Queijo", price: 12.00 },
-        { name: "Pastel de Carne com Queijo", price: 13.00 },
-        { name: "Pastel de Carne Seca", price: 13.00 },
-        { name: "Pastel de Camarão", price: 15.00 }
-
-    ],
-
-    Doses: [
-
-        { name: "Copão de Gin", price: 11.35 },
-        { name: "Copão de Vodka", price: 10.00 },
-        { name: "Copão de Chanceler", price: 10.00 },
-        { name: "Copão de Smirnoff", price: 20.00 },
-        { name: "Copão de White Horse", price: 30.00 }
-
-    ],
-
-    Combos: [
-
-        { name: "Combo de Gin", price: 45.00 },
-        { name: "Combo de Vodka", price: 45.00 },
-        { name: "Combo de Chanceler", price: 45.00 },
-        { name: "Combo de Smirnoff", price: 90.00 },
-        { name: "Combo de White Horse", price: 140.00 }
-
-    ],
-
-    Coquetéis: [
-
-        { name: "Caipirinha - Limão", price: 15.00 },
-        { name: "Caipirinha - Maracujá", price: 15.00 },
-        { name: "Caipirinha - Morango", price: 15.00 },
-        { name: "Caipiroska - Limão", price: 15.00 },
-        { name: "Caipiroska - Maracujá", price: 15.00 },
-        { name: "Caipiroska - Morango", price: 15.00 },
-        { name: "Caipirinha Gourmet - Limão", price: 20.00 },
-        { name: "Caipirinha Gourmet - Maracujá", price: 20.00 },
-        { name: "Caipirinha Gourmet - Morango", price: 20.00 },
-        { name: "Caipiroska Gourmet - Limão", price: 20.00 },
-        { name: "Caipiroska Gourmet - Maracujá", price: 20.00 },
-        { name: "Caipiroska Gourmet - Morango", price: 20.00 }
-
-    ]
-
-};
 let cart = [];
 let salesHistory = [];
 
@@ -87,27 +92,11 @@ const subtotalEl =
 
 /* PRODUTOS */
 
-function renderProducts(filter = "") {
+async function renderProducts(filter = "") {
 
     categoriesEl.innerHTML = "";
 
-
-
-
-
-
-
-
-    // PAREI AQUI ------------------------------------------------- ARRUMAR CATEGORIA
-
-
-
-
-
-
-
-
-
+    const products = await getProducts()
 
     Object.keys(products).forEach(category => {
 
@@ -206,6 +195,7 @@ function decrease(index) {
 
 }
 
+
 function removeItem(index) {
 
     cart.splice(index, 1);
@@ -213,6 +203,10 @@ function removeItem(index) {
     renderCart();
 
 }
+
+window.increase = increase
+window.decrease = decrease
+window.removeItem = removeItem
 
 function renderCart() {
 
