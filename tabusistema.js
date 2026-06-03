@@ -42,11 +42,13 @@ const channel = supabase
 
             // Exibe notificação
             mostrarToast(
-                `Nova venda: ${payload.new.produto} - R$ ${payload.new.valor}`
+                `Nova venda: ID-${payload.new.id} ${payload.new.total.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}`
             );
         }
     )
     .subscribe();
+
+window.mostrarToast = mostrarToast
 
 
 
