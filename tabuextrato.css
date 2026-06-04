@@ -175,3 +175,25 @@ button:hover {
         font-size: 1rem;
     }
 }
+
+
+
+
+@keyframes highlightInput {
+    0% {
+        box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
+    }
+
+    30% {
+        box-shadow: 0 0 30px 15px rgba(107, 51, 204, 0.568);
+    }
+
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
+    }
+}
+
+.highlight {
+    animation: highlightInput 1.5s ease-in;
+}

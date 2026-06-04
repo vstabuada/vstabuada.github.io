@@ -4,19 +4,20 @@ const supabase = createClient(
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNoaXJmZGRvdGpvcWRsenRmc3h0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1NjgxMjcsImV4cCI6MjA5NTE0NDEyN30.z4a43wJ7v6iy-MUzyV8dZ0Ejz0UeKcWNX-cBpG4MR_M'
 )
 
-console.log("conectado")
-
 const salesContainer = document.getElementById("salesContainer");
 const filterBtn = document.getElementById("filterBtn");
 
 
+const params = new URLSearchParams(window.location.search);
 
+const saleID = params.get("id");
 
+if (saleID) document.getElementById("saleId").value = saleID;
 
 async function loadSales(
     startDate = null,
     endDate = null,
-    saleId = null
+    saleId = saleID
 ) {
 
     salesContainer.innerHTML =
@@ -93,6 +94,7 @@ function renderSales(sales) {
         const card = document.createElement("div");
 
         card.classList.add("sale-card");
+        if (saleID) card.classList.add("highlight");
 
         card.innerHTML = `
       <div class="sale-header">

@@ -1,29 +1,20 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js'
+import tomSelect from 'https://cdn.jsdelivr.net/npm/tom-select@2.6.1/+esm'
+import Toastify from 'https://cdn.jsdelivr.net/npm/toastify-js/+esm'
+
 
 const supabase = createClient(
     'https://shirfddotjoqdlztfsxt.supabase.co',
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNoaXJmZGRvdGpvcWRsenRmc3h0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1NjgxMjcsImV4cCI6MjA5NTE0NDEyN30.z4a43wJ7v6iy-MUzyV8dZ0Ejz0UeKcWNX-cBpG4MR_M'
 )
 
-function mostrarToast(mensagem) {
-    const toast = document.createElement("div");
+new tomSelect("#paymentMethod", {
+    controlInput: null,
 
-    toast.textContent = mensagem;
-    toast.style.position = "fixed";
-    toast.style.top = "20px";
-    toast.style.right = "20px";
-    toast.style.padding = "15px";
-    toast.style.background = "#28a745";
-    toast.style.color = "#fff";
-    toast.style.borderRadius = "8px";
-    toast.style.zIndex = "9999";
-
-    document.body.appendChild(toast);
-
-    setTimeout(() => {
-        toast.remove();
-    }, 5000);
-}
+    onItemAdd() {
+        this.blur();
+    }
+});
 
 const channel = supabase
     .channel('novas-vendas')
@@ -37,18 +28,22 @@ const channel = supabase
         (payload) => {
             console.log('Nova venda:', payload.new);
 
-            // Toca som
-            document.getElementById('alertSound').play();
-
             // Exibe notificação
-            mostrarToast(
-                `Nova venda: ID-${payload.new.id} ${payload.new.total.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}`
-            );
+            Toastify({
+                text: `Nova venda: ${payload.new.total.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })} (ID-${payload.new.id})`,
+                destination: "tabuextrato.html?id=" + payload.new.id,
+                duration: 5000,
+                className: "toast-success",
+                stopOnFocus: true,
+                close: true,
+            }).showToast();
+
+
         }
     )
+    /*                 `Nova venda: ID-${payload.new.id} ${payload.new.total.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}` */
     .subscribe();
 
-window.mostrarToast = mostrarToast
 
 
 
