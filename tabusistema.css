@@ -1201,3 +1201,21 @@
             border-radius: 50% !important;
             background: rgba(255, 255, 255, 0.4) !important;
         }
+
+
+        @media (max-width: 768px) {
+
+            .toast-success {
+                width: calc(100vw - 32px) !important;
+                max-width: none !important;
+
+                left: 16px !important;
+                right: 16px !important;
+
+                margin: 0 !important;
+                display: flex !important;
+                justify-content: space-between !important;
+
+            }
+
+        }

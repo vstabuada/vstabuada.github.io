@@ -69,6 +69,12 @@ async function getProducts() {
             price: product.preco
         })
     })
+
+    console.log(categorizedProducts)
+    Object.values(categorizedProducts).forEach(category => {
+        category.sort((a, b) => a.price - b.price)
+    })
+
     return categorizedProducts
 }
 
@@ -348,8 +354,6 @@ async function finishSale() {
         console.error(error);
         return;
     }
-
-    alert("Venda finalizada!");
 
     cart = [];
 

@@ -1,4 +1,5 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js'
+import Toastify from 'https://cdn.jsdelivr.net/npm/toastify-js/+esm'
 
 const supabase = createClient(
     'https://shirfddotjoqdlztfsxt.supabase.co',
@@ -192,6 +193,14 @@ function bindButtons() {
                         return;
                     }
 
+                    Toastify({
+                        text: `Produto atualizado: ${nome} (ID-${id})`,
+                        duration: 5000,
+                        className: "toast-success",
+                        stopOnFocus: true,
+                        close: true,
+                    }).showToast();
+
                     loadProducts(searchInput.value);
 
                 }
@@ -213,8 +222,9 @@ function bindButtons() {
 
                     if (!confirmDelete) return;
 
-                    const id =
-                        button.dataset.id;
+                    console.log(button.dataset);
+                    const id = button.dataset.id;
+                    const nome = button.dataset.nome;
 
                     const { error } = await supabase
                         .from("produtos")
@@ -225,6 +235,14 @@ function bindButtons() {
                         console.error(error);
                         return;
                     }
+
+                    Toastify({
+                        text: `Produto excluído! (ID-${id})`,
+                        duration: 5000,
+                        className: "toast-success",
+                        stopOnFocus: true,
+                        close: true,
+                    }).showToast();
 
                     loadProducts(searchInput.value);
 
@@ -288,6 +306,14 @@ async function addProduct() {
     document.getElementById("productPrice").value = "";
     document.getElementById("productCost").value = "";
 
+    Toastify({
+        text: `Produto adicionado: ${nome}`,
+        duration: 5000,
+        className: "toast-success",
+        stopOnFocus: true,
+        close: true,
+    }).showToast();
+
     loadProducts(searchInput.value);
 
 }
@@ -304,3 +330,9 @@ document
     .addEventListener("click", addProduct);
 
 loadProducts();
+
+document.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+        addProduct();
+    }
+});
