@@ -464,5 +464,5 @@ renderProducts();
 const configBtn = document.getElementById("configBtn")
 
 configBtn.addEventListener("click", () => {
-    window.location.href = "dashboard.html"
+    window.location.href = "/src/tabusystem/dashboard/dashboard.html"
 })
